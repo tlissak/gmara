@@ -74,7 +74,7 @@
 
                output = '' ;
                Object.keys($pages).forEach(function(k){
-                   output += '<a href="/pdf/'+k+'.pdf" target="iframe">'+$pages[k]+'</a> '
+                   output += '<a href="pdf/'+k+'.pdf" target="iframe">'+$pages[k]+'</a> '
                })
                document.querySelector('#pages').innerHTML = output ;
            }
