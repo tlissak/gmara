@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Gmara</title>
+    <style>
+        a{ display: inline-block; margin: 0 2px ;}
+    </style>
+    <script>
+       var  json_index =
+            {"ברכות":{"start":1,"end":125,"daf":"2A>64A"},"שבת":{"start":126,"end":437,"daf":"2A>157B"},"עירובין ":{"start":438,"end":644,"daf":"2A>105A"},"פסחים":{"start":645,"end":884,"daf":"2A>121B"},"שקלים":{"start":885,"end":926,"daf":"2A>22B"},"יומא":{"start":927,"end":1099,"daf":"2A>88A"},"סוכה":{"start":1100,"end":1209,"daf":"2A>86B"},"ביצה":{"start":1210,"end":1287,"daf":"2A>40B"},"ראש השנה":{"start":1288,"end":1354,"daf":"2A>35A"},"תענית":{"start":1355,"end":1413,"daf":"2A>31A"},"מגילה":{"start":1414,"end":1474,"daf":"2A>32A"},"מועד קטן":{"start":1475,"end":1529,"daf":"2A>29A"},"חגיגה":{"start":1530,"end":1580,"daf":"2A>27A"},"יבמות":{"start":1581,"end":1822,"daf":"2A>122B"},"כתובות":{"start":1823,"end":2044,"daf":"2A>112B"},"נדרים":{"start":2045,"end":2224,"daf":"2A>91B"},"נזיר":{"start":2225,"end":2354,"daf":"2A>66B"},"סוטה":{"start":2355,"end":2450,"daf":"2A>49B"},"גיטין":{"start":2451,"end":2628,"daf":"2A>90B"},"קידושין":{"start":2629,"end":2790,"daf":"2A>82B"},"בבא קמא":{"start":2791,"end":3026,"daf":"2A>119B"},"בבא מציעא":{"start":3027,"end":3261,"daf":"2A>119A"},"בבא בתרא":{"start":3262,"end":3611,"daf":"2A>176B"},"סנהדרין":{"start":3612,"end":3835,"daf":"2A>113B"},"מכות":{"start":3836,"end":3881,"daf":"2A>24B"},"שבועות":{"start":3882,"end":3977,"daf":"2A>49B"},"עבודה זרה":{"start":3978,"end":4127,"daf":"2A>76B"},"הוריות":{"start":4128,"end":4152,"daf":"2A>14A"},"זבחים":{"start":4153,"end":4390,"daf":"2A>12B"},"מנחות":{"start":4391,"end":4607,"daf":"2A>110A"},"חולין":{"start":4608,"end":4888,"daf":"2A>142A"},"בכורות":{"start":4889,"end":5007,"daf":"2A>61A"},"ערכין":{"start":5008,"end":5072,"daf":"2A>34A"},"תמורה":{"start":5073,"end":5137,"daf":"2A>34A"},"כריתות":{"start":5138,"end":5191,"daf":"2A>28B"},"מעילה":{"start":5192,"end":5232,"daf":"2A>22A"},"קנים":{"start":5232,"end":5238,"daf":"22A>25A"},"תמיד":{"start":5239,"end":5255,"daf":"25B>33B"},"מדות":{"start":5256,"end":5263,"daf":"34A>37B"},"נידה":{"start":5264,"end":5406,"daf":"2A>73A"}}   ;
+
+
+       function gimatria($i){
+           $units = 'א ב ג ד ה ו ז ח ט'.split(' ');
+           $tens = 'י כ ל מ נ ס ע פ צ ק'.split(' ') ;
+           $hundreds = 'ק ר ש ת תק תר תש תת תתק'.split(' ') ;
+           $o = '' ;
+           $u = ($i % 10);
+           $t = parseInt(($i / 10)) % 10;
+           $h = parseInt(($i / 100)) ;
+
+           if ($h>0 && $h < 10)
+               $o += $hundreds[$h-1] ;
+
+           if ($t === 1 && $u===5){
+               $o += 'טו' ;
+               $t=0;$u = 0 ;
+           }
+           if ($t === 1 && $u===6){
+               $o += 'טז' ;
+               $t = 0 ;$u = 0 ;
+           }
+           if ($t>0 && $t < 10)
+               $o += $tens[$t-1] ;
+           if ($u>0 )
+               $o += $units[$u-1] ;
+           return $o ;
+       }
+
+
+
+       document.addEventListener('DOMContentLoaded',()=>{
+           Object.keys(json_index).forEach(function(k){
+               let a = document.createElement('a');
+               a.href = '?g='+k+'&'+ (new URLSearchParams( json_index[k])).toString();
+               a.innerText = k
+               document.querySelector('#index').append(a)
+           });
+
+           let params = (new URL(document.location)).searchParams;
+           if (params.get('g')){
+
+               document.querySelector('#title').innerHTML = params.get('g') ;
+
+               let gmara = json_index[params.get('g')] ;
+               //console.log(gmara);
+
+               let pages_index = gmara.daf.split('>') ;
+               $s = parseInt(pages_index[0])*2 ;
+               if (pages_index[0].includes('B'))
+                   $s++ ;
+               $e = parseInt( pages_index[1])*2 ;
+
+               $pages = {} ;
+
+               for ($j = gmara.start,$i=$s ; $j <= gmara.end ; $j++,$s=$s+1){
+                   $page = parseInt($s /2);
+                   $pages[$j] = ( gimatria($page) +  ['.',':'][($s%2)] );
+               }
+
+               output = '' ;
+               Object.keys($pages).forEach(function(k){
+                   output += '<a href="/pdf/'+k+'.pdf" target="iframe">'+$pages[k]+'</a> '
+               })
+               document.querySelector('#pages').innerHTML = output ;
+           }
+
+       })
+    </script>
+</head>
+<body>
+<p dir="rtl" id="index"></p>
+<h3 dir="rtl" id="title"></h3>
+<p dir="rtl" id="pages"></p>
+
+
+<iframe name="iframe" src="about:blank" frameborder="0" height="800px" width="100%" ></iframe>
+
+
+</body>
+</html>
