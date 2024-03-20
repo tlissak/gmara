@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Gmara</title>
+    <title>גמרא תלמוד בבלי Gmara - Talmud Bavli</title>
     <style>
         a{ display: inline-block; margin: 0 2px ;}
     </style>
@@ -78,17 +78,14 @@
                })
                document.querySelector('#pages').innerHTML = output ;
            }
-
        })
     </script>
 </head>
-<body>
-<p dir="rtl" id="index"></p>
-<h3 dir="rtl" id="title"></h3>
-<p dir="rtl" id="pages"></p>
-
-
-<iframe name="iframe" src="about:blank" frameborder="0" height="800px" width="100%" ></iframe>
+<body dir="rtl" >
+<p  id="index"></p>
+<h3 id="title"></h3>
+<p id="pages"></p>
+<iframe src="about:blank" style="border: none; width: 100%; min-height:500px " ></iframe>
 
 
 </body>
